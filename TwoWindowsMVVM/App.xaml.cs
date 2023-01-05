@@ -1,17 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using Microsoft.Extensions.DependencyInjection;
+using TwoWindowsMVVM.ViewModels;
 
-namespace TwoWindowsMVVM
+namespace TwoWindowsMVVM;
+
+public partial class App
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    private static IServiceProvider? _Services;
+
+    public static IServiceProvider Services => _Services ??= InitializeServices().BuildServiceProvider();
+
+    private static IServiceCollection InitializeServices()
     {
+        var services = new ServiceCollection();
+
+        services.AddSingleton<MainWindowViewModel>();
+        services.AddTransient<SecondaryWindowViewModel>();
+
+        return services;
     }
 }
