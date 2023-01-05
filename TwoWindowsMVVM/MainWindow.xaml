@@ -9,6 +9,32 @@
         Title="{Binding Title}"
         Width="800" Height="450">
     <Grid>
-        
+        <DockPanel Margin="50">
+            <GroupBox DockPanel.Dock="Top" Header="Сообщение второму окну">
+                <TextBox Text=""/>
+            </GroupBox>
+            <UniformGrid DockPanel.Dock="Top" Rows="1">
+                <Button Margin="10,5" Content="Отправить" Command="{Binding SendMessageCommand}" CommandParameter="{Binding Message}"/>
+                <Button Margin="10,5" Content="Открыть второе окно" Command="{Binding OpenSecondWindowCommand}"/>
+                <Button Margin="10,5" Content="Перейти во второе окно" Command="{Binding ChangeToSecondWindowCommand}"/>
+            </UniformGrid>
+            <GroupBox Header="Сообщения">
+                <ListBox ItemsSource="{Binding Messages}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="MessageDateColumn" Width="Auto"/>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Time, Mode=OneTime, StringFormat=HH:mm:ss.f}" VerticalAlignment="Top"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Text}" TextWrapping="WrapWithOverflow"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+        </DockPanel>
     </Grid>
 </Window>
