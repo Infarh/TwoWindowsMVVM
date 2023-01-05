@@ -3,7 +3,7 @@
 namespace TwoWindowsMVVM.ViewModels;
 
 
-public class MainWindowViewModel : TitledViewModel
+public class MainWindowViewModel : DialogViewModel
 {
     public MainWindowViewModel()
     {

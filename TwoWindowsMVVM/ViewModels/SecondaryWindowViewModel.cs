@@ -2,7 +2,7 @@
 
 namespace TwoWindowsMVVM.ViewModels;
 
-public class SecondaryWindowViewModel : TitledViewModel
+public class SecondaryWindowViewModel : DialogViewModel
 {
     public SecondaryWindowViewModel()
     {
