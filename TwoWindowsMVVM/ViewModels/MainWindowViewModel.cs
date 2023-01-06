@@ -2,17 +2,37 @@
 using System.Windows.Input;
 using TwoWindowsMVVM.Commands;
 using TwoWindowsMVVM.Models;
+using TwoWindowsMVVM.Services;
 using TwoWindowsMVVM.ViewModels.Base;
 
 namespace TwoWindowsMVVM.ViewModels;
 
-
-public class MainWindowViewModel : DialogViewModel
+public class MainWindowViewModel : DialogViewModel, IDisposable
 {
+    private readonly IUserDialog _UserDialog;
+    private readonly IMessageBus _MessageBus;
+    private readonly IDisposable _MessageUnsubscriber;
+
     public MainWindowViewModel()
     {
         Title = "Главное окно";
     }
+
+    public MainWindowViewModel(IUserDialog UserDialog, IMessageBus MessageBus) : this()
+    {
+        IsInDesignMode   = false;
+        _UserDialog      = UserDialog;
+        _MessageBus = MessageBus;
+
+        _MessageUnsubscriber = MessageBus.RegisterHandler<Message>(msg => _Messages.Add(new(msg.Text)));
+    }
+
+    public void Dispose()
+    {
+        _MessageUnsubscriber.Dispose();
+    }
+
+    public bool IsInDesignMode { get; } = true;
 
     #region Message : string? - Сообщение
 
@@ -24,7 +44,7 @@ public class MainWindowViewModel : DialogViewModel
 
     #endregion
 
-    private ObservableCollection<TextMessageModel> _Messages = new();
+    private readonly ObservableCollection<TextMessageModel> _Messages = new();
 
     public IEnumerable<TextMessageModel> Messages => _Messages;
 
@@ -39,7 +59,7 @@ public class MainWindowViewModel : DialogViewModel
     /// <summary>Логика выполнения - Отправить сообщение второму окну</summary>
     private void OnSendMessageCommandExecuted(object? p)
     {
-        
+        _MessageBus.Send(new Message((string)p!));
     }
 
     #endregion
@@ -55,7 +75,7 @@ public class MainWindowViewModel : DialogViewModel
     /// <summary>Логика выполнения - Открыть второе окно</summary>
     private void OnOpenSecondWindowCommandExecuted()
     {
-        
+        _UserDialog.OpenSecondaryWindow();
     }
 
     #endregion
@@ -71,7 +91,8 @@ public class MainWindowViewModel : DialogViewModel
     /// <summary>Логика выполнения - Перейти во второе окно</summary>
     private void OnChangeToSecondWindowCommandExecuted()
     {
-        
+        _UserDialog.OpenSecondaryWindow();
+        OnDialogComplete(EventArgs.Empty);
     }
 
     #endregion

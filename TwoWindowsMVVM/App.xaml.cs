@@ -4,6 +4,8 @@ using TwoWindowsMVVM.Services;
 using TwoWindowsMVVM.Services.Implementation;
 using TwoWindowsMVVM.ViewModels;
 
+using static System.Formats.Asn1.AsnWriter;
+
 namespace TwoWindowsMVVM;
 
 public partial class App
@@ -17,9 +19,10 @@ public partial class App
         var services = new ServiceCollection();
 
         services.AddSingleton<MainWindowViewModel>();
-        services.AddTransient<SecondaryWindowViewModel>();
+        services.AddScoped<SecondaryWindowViewModel>();
 
         services.AddSingleton<IUserDialog, UserDialogService>();
+        services.AddSingleton<IMessageBus, MessageBusService>();
 
         services.AddTransient(s =>
         {
@@ -32,9 +35,11 @@ public partial class App
         services.AddTransient(
             s =>
             {
-                var model  = s.GetRequiredService<SecondaryWindowViewModel>();
+                var scope  = s.CreateScope();
+                var model  = scope.ServiceProvider.GetRequiredService<SecondaryWindowViewModel>();
                 var window = new SecondaryWindow { DataContext = model };
                 model.DialogComplete += (_, _) => window.Close();
+                window.Closed        += (_, _) => scope.Dispose();
                 return window;
             });
 
@@ -45,6 +50,6 @@ public partial class App
     {
         base.OnStartup(e);
 
-        Services.GetRequiredService<MainWindow>().Show();
+        Services.GetRequiredService<IUserDialog>().OpenMainWindow();
     }
 }

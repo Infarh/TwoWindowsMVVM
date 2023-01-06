@@ -2,5 +2,7 @@
 
 public interface IUserDialog
 {
+    void OpenMainWindow();
 
+    void OpenSecondaryWindow();
 }

@@ -3,16 +3,37 @@ using System.Windows.Input;
 
 using TwoWindowsMVVM.Commands;
 using TwoWindowsMVVM.Models;
+using TwoWindowsMVVM.Services;
 using TwoWindowsMVVM.ViewModels.Base;
 
 namespace TwoWindowsMVVM.ViewModels;
 
-public class SecondaryWindowViewModel : DialogViewModel
+public class SecondaryWindowViewModel : DialogViewModel, IDisposable
 {
+    private readonly IUserDialog _UserDialog;
+    private readonly IMessageBus _MessageBus;
+    private readonly IDisposable _MessageUnsubscriber;
+
     public SecondaryWindowViewModel()
     {
         Title = "Вторичное окно";
     }
+
+    public SecondaryWindowViewModel(IUserDialog UserDialog, IMessageBus MessageBus) : this()
+    {
+        IsInDesignMode   = false;
+        _UserDialog      = UserDialog;
+        _MessageBus = MessageBus;
+
+        _MessageUnsubscriber = MessageBus.RegisterHandler<Message>(msg => _Messages.Add(new(msg.Text)));
+    }
+
+    public void Dispose()
+    {
+        _MessageUnsubscriber.Dispose();
+    }
+
+    public bool IsInDesignMode { get; } = true;
 
     #region Message : string? - Сообщение
 
@@ -24,7 +45,7 @@ public class SecondaryWindowViewModel : DialogViewModel
 
     #endregion
 
-    private ObservableCollection<TextMessageModel> _Messages = new();
+    private readonly ObservableCollection<TextMessageModel> _Messages = new();
 
     public IEnumerable<TextMessageModel> Messages => _Messages;
 
@@ -39,7 +60,7 @@ public class SecondaryWindowViewModel : DialogViewModel
     /// <summary>Логика выполнения - Отправить сообщение первому окну</summary>
     private void OnSendMessageCommandExecuted(object? p)
     {
-
+        _MessageBus.Send(new Message((string)p!));
     }
 
     #endregion
@@ -55,7 +76,7 @@ public class SecondaryWindowViewModel : DialogViewModel
     /// <summary>Логика выполнения - Открыть первое окно</summary>
     private void OnOpenMainWindowCommandExecuted()
     {
-
+        _UserDialog.OpenMainWindow();
     }
 
     #endregion
@@ -71,7 +92,8 @@ public class SecondaryWindowViewModel : DialogViewModel
     /// <summary>Логика выполнения - Перейти во первое окно</summary>
     private void OnChangeToMainWindowCommandExecuted()
     {
-
+        _UserDialog.OpenMainWindow();
+        OnDialogComplete(EventArgs.Empty);
     }
 
     #endregion
