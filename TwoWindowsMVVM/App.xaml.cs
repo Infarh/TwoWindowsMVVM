@@ -17,7 +17,7 @@ public partial class App
         var services = new ServiceCollection();
 
         services.AddSingleton<MainWindowViewModel>();
-        services.AddTransient<SecondaryWindowViewModel>();
+        services.AddScoped<SecondaryWindowViewModel>();
 
         services.AddSingleton<IUserDialog, UserDialogServices>();
         services.AddSingleton<IMessageBus, MessageBusService>();
@@ -35,9 +35,11 @@ public partial class App
         services.AddTransient(
             s =>
             {
-                var model  = s.GetRequiredService<SecondaryWindowViewModel>();
+                var scope  = s.CreateScope();
+                var model  = scope.ServiceProvider.GetRequiredService<SecondaryWindowViewModel>();
                 var window = new SecondaryWindow { DataContext = model };
                 model.DialogComplete += (_, _) => window.Close();
+                window.Closed        += (_, _) => scope.Dispose();
 
                 return window;
             });
