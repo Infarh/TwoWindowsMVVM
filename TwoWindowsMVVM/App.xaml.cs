@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using TwoWindowsMVVM.Services;
+using TwoWindowsMVVM.Services.Implementations;
 using TwoWindowsMVVM.ViewModels;
 
 namespace TwoWindowsMVVM;
@@ -16,6 +18,8 @@ public partial class App
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<SecondaryWindowViewModel>();
+
+        services.AddSingleton<IUserDialog, UserDialogServices>();
 
         services.AddTransient(
             s =>

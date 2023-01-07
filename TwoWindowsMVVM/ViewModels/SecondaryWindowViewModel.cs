@@ -3,15 +3,23 @@ using System.Windows.Input;
 
 using TwoWindowsMVVM.Commands;
 using TwoWindowsMVVM.Models;
+using TwoWindowsMVVM.Services;
 using TwoWindowsMVVM.ViewModels.Base;
 
 namespace TwoWindowsMVVM.ViewModels;
 
 public class SecondaryWindowViewModel : TitledViewModel
 {
+    private readonly IUserDialog _UserDialog;
+
     public SecondaryWindowViewModel()
     {
         Title = "Вторичное окно";
+    }
+
+    public SecondaryWindowViewModel(IUserDialog UserDialog) : this()
+    {
+        _UserDialog = UserDialog;
     }
 
     #region Message : string? - Текст сообщения
