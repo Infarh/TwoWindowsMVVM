@@ -7,6 +7,18 @@
         Title="SecondaryWindow"
         Width="800" Height="450">
     <Grid>
-        
+        <DockPanel Margin="50">
+            <GroupBox DockPanel.Dock="Top" Header="Сообщение второму окну">
+                <TextBox/>
+            </GroupBox>
+            <UniformGrid DockPanel.Dock="Top" Rows="1">
+                <Button Margin="10,5" Content="Отправить"/>
+                <Button Margin="10,5" Content="Открыть первое окно"/>
+                <Button Margin="10,5" Content="Перейти во первое окно"/>
+            </UniformGrid>
+            <GroupBox Header="Сообщения">
+                <ListBox/>
+            </GroupBox>
+        </DockPanel>
     </Grid>
 </Window>

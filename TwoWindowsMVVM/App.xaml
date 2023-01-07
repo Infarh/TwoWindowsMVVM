@@ -8,9 +8,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Default.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
-            <l:ServiceLocator x:Key="Locator"/>
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>
