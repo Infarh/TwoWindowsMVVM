@@ -10,15 +10,17 @@ namespace TwoWindowsMVVM.ViewModels;
 public class MainWindowViewModel : DialogViewModel
 {
     private readonly IUserDialog _UserDialog;
+    private readonly IMessageBus _MessageBus;
 
     public MainWindowViewModel()
     {
         Title = "Главное окно";
     }
 
-    public MainWindowViewModel(IUserDialog UserDialog) : this()
+    public MainWindowViewModel(IUserDialog UserDialog, IMessageBus MessageBus) : this()
     {
         _UserDialog = UserDialog;
+        _MessageBus = MessageBus;
     }
 
     #region Message : string? - Текст сообщения

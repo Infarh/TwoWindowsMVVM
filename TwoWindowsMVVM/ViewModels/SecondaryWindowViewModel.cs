@@ -11,15 +11,17 @@ namespace TwoWindowsMVVM.ViewModels;
 public class SecondaryWindowViewModel : DialogViewModel
 {
     private readonly IUserDialog _UserDialog;
+    private readonly IMessageBus _MessageBus;
 
     public SecondaryWindowViewModel()
     {
         Title = "Вторичное окно";
     }
 
-    public SecondaryWindowViewModel(IUserDialog UserDialog) : this()
+    public SecondaryWindowViewModel(IUserDialog UserDialog, IMessageBus MessageBus) : this()
     {
         _UserDialog = UserDialog;
+        _MessageBus = MessageBus;
     }
 
     #region Message : string? - Текст сообщения

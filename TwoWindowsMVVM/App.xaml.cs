@@ -20,6 +20,7 @@ public partial class App
         services.AddTransient<SecondaryWindowViewModel>();
 
         services.AddSingleton<IUserDialog, UserDialogServices>();
+        services.AddSingleton<IMessageBus, MessageBusService>();
 
         services.AddTransient(
             s =>
