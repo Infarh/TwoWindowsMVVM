@@ -8,7 +8,7 @@ using TwoWindowsMVVM.ViewModels.Base;
 
 namespace TwoWindowsMVVM.ViewModels;
 
-public class SecondaryWindowViewModel : TitledViewModel
+public class SecondaryWindowViewModel : DialogViewModel
 {
     private readonly IUserDialog _UserDialog;
 
@@ -80,6 +80,7 @@ public class SecondaryWindowViewModel : TitledViewModel
     private void OnChangeToMainWindowCommandExecuted()
     {
         _UserDialog.OpenMainWindow();
+        OnDialogComplete(EventArgs.Empty);
     }
 
     #endregion

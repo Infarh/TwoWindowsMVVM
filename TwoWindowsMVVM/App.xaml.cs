@@ -26,6 +26,7 @@ public partial class App
             {
                 var model  = s.GetRequiredService<MainWindowViewModel>();
                 var window = new MainWindow { DataContext = model };
+                model.DialogComplete += (_, _) => window.Close();
 
                 return window;
             });
@@ -35,6 +36,7 @@ public partial class App
             {
                 var model  = s.GetRequiredService<SecondaryWindowViewModel>();
                 var window = new SecondaryWindow { DataContext = model };
+                model.DialogComplete += (_, _) => window.Close();
 
                 return window;
             });
