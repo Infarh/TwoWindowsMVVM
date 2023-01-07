@@ -4,20 +4,36 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:l="clr-namespace:TwoWindowsMVVM"
-        Title="SecondaryWindow"
+        xmlns:vm="clr-namespace:TwoWindowsMVVM.ViewModels"
+        d:DataContext="{d:DesignInstance vm:SecondaryWindowViewModel, IsDesignTimeCreatable=True}"
+        Title="{Binding Title}"
         Width="800" Height="450">
     <Grid>
         <DockPanel Margin="50">
             <GroupBox DockPanel.Dock="Top" Header="Сообщение второму окну">
-                <TextBox/>
+                <TextBox Text="{Binding Message}"/>
             </GroupBox>
             <UniformGrid DockPanel.Dock="Top" Rows="1">
-                <Button Margin="10,5" Content="Отправить"/>
-                <Button Margin="10,5" Content="Открыть первое окно"/>
-                <Button Margin="10,5" Content="Перейти во первое окно"/>
+                <Button Margin="10,5" Content="Отправить" Command="{Binding SendMessageCommand}" CommandParameter="{Binding Message}"/>
+                <Button Margin="10,5" Content="Открыть главное окно" Command="{Binding OpenMainWindowCommand}"/>
+                <Button Margin="10,5" Content="Перейти во главное окно" Command="{Binding ChangeToMainWindowCommand}"/>
             </UniformGrid>
             <GroupBox Header="Сообщения">
-                <ListBox/>
+                <ListBox ItemsSource="{Binding Messages}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MessageTimeColumn"/>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Time, StringFormat=HH:mm:ss.f, Mode=OneTime}"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Text, Mode=OneTime}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </GroupBox>
         </DockPanel>
     </Grid>
