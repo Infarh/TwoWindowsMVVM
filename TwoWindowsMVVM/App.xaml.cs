@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using TwoWindowsMVVM.ViewModels;
 
 namespace TwoWindowsMVVM;
@@ -16,6 +17,31 @@ public partial class App
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<SecondaryWindowViewModel>();
 
+        services.AddTransient(
+            s =>
+            {
+                var model  = s.GetRequiredService<MainWindowViewModel>();
+                var window = new MainWindow { DataContext = model };
+
+                return window;
+            });
+
+        services.AddTransient(
+            s =>
+            {
+                var model  = s.GetRequiredService<SecondaryWindowViewModel>();
+                var window = new SecondaryWindow { DataContext = model };
+
+                return window;
+            });
+
         return services;
+    }
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+
+        Services.GetRequiredService<MainWindow>().Show();
     }
 }
