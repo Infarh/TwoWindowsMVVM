@@ -46,6 +46,6 @@ public partial class App
     {
         base.OnStartup(e);
 
-        Services.GetRequiredService<MainWindow>().Show();
+        Services.GetRequiredService<IUserDialog>().OpenMainWindow();
     }
 }
