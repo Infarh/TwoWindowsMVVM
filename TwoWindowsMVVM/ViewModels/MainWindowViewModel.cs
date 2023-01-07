@@ -62,7 +62,7 @@ public class MainWindowViewModel : TitledViewModel
     /// <summary>Логика выполнения - Открыть второе окно</summary>
     private void OnOpenSecondWindowCommandExecuted()
     {
-        
+        _UserDialog.OpenSecondaryWindow();
     }
 
     #endregion
@@ -78,7 +78,7 @@ public class MainWindowViewModel : TitledViewModel
     /// <summary>Логика выполнения - Перейти во второе окно</summary>
     private void OnChangeToSecondWindowCommandExecuted()
     {
-        
+        _UserDialog.OpenSecondaryWindow();
     }
 
     #endregion

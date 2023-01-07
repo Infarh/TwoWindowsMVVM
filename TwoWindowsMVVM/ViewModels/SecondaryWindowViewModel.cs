@@ -63,7 +63,7 @@ public class SecondaryWindowViewModel : TitledViewModel
     /// <summary>Логика выполнения - Открыть Главное окно</summary>
     private void OnOpenMainWindowCommandExecuted()
     {
-
+        _UserDialog.OpenMainWindow();
     }
 
     #endregion
@@ -79,7 +79,7 @@ public class SecondaryWindowViewModel : TitledViewModel
     /// <summary>Логика выполнения - Перейти во Главное окно</summary>
     private void OnChangeToMainWindowCommandExecuted()
     {
-
+        _UserDialog.OpenMainWindow();
     }
 
     #endregion
